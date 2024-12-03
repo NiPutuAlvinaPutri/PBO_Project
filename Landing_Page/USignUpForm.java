@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class USignUpForm {
     public USignUpForm() {
-        // Create the frame
+        // Create the framee
         JFrame frame = new JFrame("Sign Up User");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 700); // Ukuran frame yang sesuai
@@ -29,10 +29,11 @@ public class USignUpForm {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-
         // Astronaut Icon
         ImageIcon astronautIconImage = new ImageIcon("../asset/hallo_user.2.png");
-        Image scaledAstronautIcon = astronautIconImage.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH); // Resize astronaut icon
+        Image scaledAstronautIcon = astronautIconImage.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH); // Resize
+                                                                                                                 // astronaut
+                                                                                                                 // icon
         JLabel astronautIcon = new JLabel(new ImageIcon(scaledAstronautIcon));
         astronautIcon.setBounds(135, 150, 80, 80); // Tempatkan ikon di atas label Sign Up
         roundedPanel.add(astronautIcon);
@@ -44,7 +45,6 @@ public class USignUpForm {
         signUpLabel.setFont(new Font("Poppins", Font.BOLD, 24));
         signUpLabel.setHorizontalAlignment(SwingConstants.CENTER);
         roundedPanel.add(signUpLabel);
-
 
         // Email Label and Field with Icon inside
         JLabel emailLabel = new JLabel("Email");
@@ -67,7 +67,8 @@ public class USignUpForm {
         emailPanel.add(emailField, BorderLayout.CENTER);
 
         ImageIcon emailIcon = new ImageIcon("../asset/email.png"); // Path to email icon
-        JLabel emailIconLabel = new JLabel(new ImageIcon(emailIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        JLabel emailIconLabel = new JLabel(
+                new ImageIcon(emailIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
         emailPanel.add(emailIconLabel, BorderLayout.EAST); // Letakkan ikon di sebelah kanan
 
         gbc.gridx = 1;
@@ -94,7 +95,8 @@ public class USignUpForm {
         namaPanel.add(namaField, BorderLayout.CENTER);
 
         ImageIcon namaIcon = new ImageIcon("../asset/nama.png"); // Path to nama icon
-        JLabel namaIconLabel = new JLabel(new ImageIcon(namaIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        JLabel namaIconLabel = new JLabel(
+                new ImageIcon(namaIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
         namaPanel.add(namaIconLabel, BorderLayout.EAST); // Letakkan ikon di sebelah kanan
 
         gbc.gridx = 1;
@@ -121,7 +123,8 @@ public class USignUpForm {
         passwordPanel.add(passwordField, BorderLayout.CENTER);
 
         ImageIcon passwordIcon = new ImageIcon("../asset/password.png"); // Path to password icon
-        JLabel passwordIconLabel = new JLabel(new ImageIcon(passwordIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        JLabel passwordIconLabel = new JLabel(
+                new ImageIcon(passwordIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
         passwordPanel.add(passwordIconLabel, BorderLayout.EAST); // Letakkan ikon di sebelah kanan
 
         gbc.gridx = 1;
@@ -140,14 +143,15 @@ public class USignUpForm {
 
         JPanel genderPanel = new JPanel(new BorderLayout());
         genderPanel.setOpaque(false); // Menonaktifkan background panel, agar transparan
-        JComboBox<String> genderCombo = new JComboBox<>(new String[] {"Laki-Laki", "Perempuan"});
+        JComboBox<String> genderCombo = new JComboBox<>(new String[] { "Laki-Laki", "Perempuan" });
         genderCombo.setBackground(new Color(12, 34, 64));
         genderCombo.setForeground(Color.WHITE);
         genderCombo.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.WHITE));
         genderPanel.add(genderCombo, BorderLayout.CENTER);
 
         ImageIcon genderIcon = new ImageIcon("../asset/gender.png"); // Path to gender icon
-        JLabel genderIconLabel = new JLabel(new ImageIcon(genderIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        JLabel genderIconLabel = new JLabel(
+                new ImageIcon(genderIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
         genderPanel.add(genderIconLabel, BorderLayout.EAST); // Letakkan ikon di sebelah kanan
 
         gbc.gridx = 1;
@@ -174,7 +178,8 @@ public class USignUpForm {
         phonePanel.add(phoneField, BorderLayout.CENTER);
 
         ImageIcon phoneIcon = new ImageIcon("../asset/phone.png"); // Path to phone icon
-        JLabel phoneIconLabel = new JLabel(new ImageIcon(phoneIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        JLabel phoneIconLabel = new JLabel(
+                new ImageIcon(phoneIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
         phonePanel.add(phoneIconLabel, BorderLayout.EAST); // Letakkan ikon di sebelah kanan
 
         gbc.gridx = 1;
@@ -203,7 +208,8 @@ public class USignUpForm {
         alamatPanel.add(alamatField, BorderLayout.CENTER);
 
         ImageIcon alamatIconImage = new ImageIcon("../asset/location.png"); // Path ke ikon Alamat
-        JLabel alamatIconLabel = new JLabel(new ImageIcon(alamatIconImage.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        JLabel alamatIconLabel = new JLabel(
+                new ImageIcon(alamatIconImage.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
         alamatPanel.add(alamatIconLabel, BorderLayout.EAST); // Letakkan ikon di sebelah kanan
 
         gbc.gridx = 1;

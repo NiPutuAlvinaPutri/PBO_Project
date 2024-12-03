@@ -215,7 +215,7 @@ public class PSignUpForm {
         alamatPanel.add(alamatIconLabel, BorderLayout.EAST); // Letakkan ikon di sebelah kanan
 
         gbc.gridx = 1;
-        gbc.gridy = 7; // Sama seperti posisi Alamat Label
+        gbc.gridy = 7; // Sama seperti posisi Alamat Labell
         gbc.gridwidth = 2;
         roundedPanel.add(alamatPanel, gbc);
 

@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import User.*; 
+import User.*;
 
 public class ULoginForm {
 
-    // Verifikasi username dan password
+    // Verifikasi username dan passwords
     private boolean verifyLogin(String username, String password) {
         try (Connection conn = DbConnection.getConnection()) { // Menggunakan DbConnection
             if (conn != null) {
@@ -54,7 +54,9 @@ public class ULoginForm {
 
         // Icon astronaut
         ImageIcon astronautIconImage = new ImageIcon("../asset/user2.png");
-        Image scaledAstronautIcon = astronautIconImage.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH); // Resize astronaut icon
+        Image scaledAstronautIcon = astronautIconImage.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH); // Resize
+                                                                                                                 // astronaut
+                                                                                                                 // icon
         JLabel astronautIcon = new JLabel(new ImageIcon(scaledAstronautIcon));
         astronautIcon.setBounds(135, 50, 80, 80); // Posisikan lebih tengah
         roundedPanel.add(astronautIcon);
@@ -121,7 +123,8 @@ public class ULoginForm {
                     new home_user(); // Buka halaman home_user jika login berhasil
                     frame.dispose(); // Tutup form login
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Invalid username or password", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -140,10 +143,10 @@ public class ULoginForm {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        new USignUpForm();  // Open the sign-up form
+                        new USignUpForm(); // Open the sign-up form
                     }
                 });
-                frame.dispose();  // Close login form
+                frame.dispose(); // Close login form
             }
         });
         roundedPanel.add(signUpLabel);

@@ -211,7 +211,7 @@ public class Dashboard {
         gbc.insets = new Insets(10, 20, 10, 20);
 
         JPanel userPanel = createEnhancedRolePanel(
-                "asset/hallo_user.2.png",
+                "asset/hallo_user.2.png ",
                 "Revenue User",
                 "Hai, User! Kami senang melihat Anda di sini. Silakan login untuk menemukan venue yang sempurna untuk acara Anda.",
                 "I am User");

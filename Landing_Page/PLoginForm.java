@@ -138,7 +138,7 @@ public class PLoginForm {
         // Add panel to frame
         frame.add(roundedPanel);
 
-        // Center the frame
+        // Center the framee
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
