@@ -12,7 +12,7 @@ public class PLoginForm {
         frame.setSize(450, 650); // Ukuran frame diperbesar
         frame.getContentPane().setBackground(new Color(12, 34, 64)); // Background warna biru gelap
         frame.setLayout(new GridBagLayout());
-        
+
         // Panel utama untuk isi konten
         JPanel roundedPanel = new JPanel() {
             @Override
@@ -27,10 +27,12 @@ public class PLoginForm {
         roundedPanel.setBackground(new Color(20, 44, 84)); // Panel dalam warna biru gelap
         roundedPanel.setPreferredSize(new Dimension(350, 500));
         roundedPanel.setLayout(null);
-        
+
         // Icon astronaut
         ImageIcon astronautIconImage = new ImageIcon("../asset/hello_provider.png");
-        Image scaledAstronautIcon = astronautIconImage.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH); // Resize astronaut icon
+        Image scaledAstronautIcon = astronautIconImage.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH); // Resize
+                                                                                                                 // astronaut
+                                                                                                                 // icon
         JLabel astronautIcon = new JLabel(new ImageIcon(scaledAstronautIcon));
         astronautIcon.setBounds(135, 50, 80, 80); // Posisikan lebih tengah
         roundedPanel.add(astronautIcon);
@@ -60,7 +62,7 @@ public class PLoginForm {
         roundedPanel.add(emailField);
 
         // Email Icon
-        ImageIcon emailIconImage = new ImageIcon("../asset/email.png");
+        ImageIcon emailIconImage = new ImageIcon("asset/email.png");
         Image scaledEmailIcon = emailIconImage.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel emailIcon = new JLabel(new ImageIcon(scaledEmailIcon));
         emailIcon.setBounds(300, 230, 20, 20); // Ikon sejajar dengan input field
@@ -83,7 +85,7 @@ public class PLoginForm {
         roundedPanel.add(passwordField);
 
         // Password Icon
-        ImageIcon passwordIconImage = new ImageIcon("../asset/password.png");
+        ImageIcon passwordIconImage = new ImageIcon("asset/password.png");
         Image scaledPasswordIcon = passwordIconImage.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel passwordIcon = new JLabel(new ImageIcon(scaledPasswordIcon));
         passwordIcon.setBounds(300, 310, 20, 20); // Ikon sejajar dengan input field
@@ -125,17 +127,17 @@ public class PLoginForm {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        new PSignUpForm();  // Open the sign-up form
+                        new PSignUpForm(); // Open the sign-up form
                     }
                 });
-                frame.dispose();  // Close login form
+                frame.dispose(); // Close login form
             }
         });
-        roundedPanel.add(signUpLabel);        
+        roundedPanel.add(signUpLabel);
 
         // Add panel to frame
         frame.add(roundedPanel);
-        
+
         // Center the frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
