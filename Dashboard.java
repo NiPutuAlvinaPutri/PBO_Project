@@ -2,194 +2,415 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class Dashboard {
     private static JFrame frame;
 
     public static void main(String[] args) {
-        frame = new JFrame("Revenue");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 700);
-        frame.setLayout(new BorderLayout());
+        SwingUtilities.invokeLater(() -> {
+            frame = new JFrame("Revenue");
 
-        // Bagian Header
-        JPanel headerPanel = new JPanel();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1200, 700);
+            frame.setLayout(new BorderLayout());
+            frame.setBackground(Color.WHITE);
+
+            // Header Panel
+            JPanel headerPanel = createHeaderPanel();
+
+            // Main Content Panel
+            JPanel contentPanel = createMainContentPanel();
+
+            frame.add(headerPanel, BorderLayout.NORTH);
+            frame.add(contentPanel, BorderLayout.CENTER);
+
+            frame.setVisible(true);
+        });
+    }
+
+    // Create Header Panel
+    private static JPanel createHeaderPanel() {
+        // Header Panel dengan BorderLayout
+        JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(new Color(10, 30, 70));
-        headerPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JButton homeButton = new JButton("Home");
-        homeButton.setForeground(Color.BLACK);
-        homeButton.setBackground(Color.WHITE);
+        // Tambahan untuk logo dan teks
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5)); // Panel untuk logo dan teks
+        logoPanel.setBackground(new Color(10, 30, 70)); // Warna latar panel logo sesuai header
 
-        JButton getStartedButton = new JButton("Get Started");
-        getStartedButton.setForeground(Color.WHITE);
-        getStartedButton.setBackground(new Color(10, 30, 70));
+        // Menambahkan logo
+        ImageIcon logoIcon = new ImageIcon("aset/logo.png"); // Ambil logo dari folder "aset"
+        Image scaledLogo = logoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH); // Resize logo
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledLogo)); // Tambahkan logo ke JLabel
+        logoPanel.add(logoLabel); // Tambahkan logo ke panel logo
 
-        headerPanel.add(homeButton);
-        headerPanel.add(getStartedButton);
+        // Menambahkan teks "REVENUE"
+        JLabel textLabel = new JLabel("REVENUE");
+        textLabel.setFont(new Font("SansSerif", Font.BOLD, 20)); // Atur font teks
+        textLabel.setForeground(Color.WHITE); // Warna teks
+        textLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0)); // Tambahkan jarak 20px dari logo
+        logoPanel.add(textLabel); // Tambahkan teks ke panel logo
 
-        // Bagian Konten Utama
+        headerPanel.add(logoPanel, BorderLayout.WEST); // Tambahkan panel logo ke sisi kiri header
+
+        // Panel untuk tombol navigasi di sisi kanan
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 5));
+        buttonPanel.setBackground(new Color(10, 30, 70)); // Warna latar belakang sesuai dengan header
+
+        // Tombol Home
+        JButton homeButton = createStyledButton("Home", Color.WHITE, new Color(10, 30, 70));
+        buttonPanel.add(homeButton);
+
+        // Tombol Get Started
+        JButton getStartedButton = createStyledButton("Get Started", Color.WHITE, new Color(10, 30, 70));
+        getStartedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll();
+                frame.add(createRoleSelectionPanel(headerPanel, createMainContentPanel()));
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+        buttonPanel.add(getStartedButton);
+
+        headerPanel.add(buttonPanel, BorderLayout.EAST); // Tambahkan tombol ke sisi kanan header
+
+        return headerPanel;
+    }
+
+    // Create Main Content Panel
+    private static JPanel createMainContentPanel() {
         JPanel contentPanel = new JPanel(new GridLayout(1, 2));
         contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-        // Panel Kiri (Teks)
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(null);
-        leftPanel.setBackground(Color.WHITE);
+        // Left Panel (Text)
+        JPanel leftPanel = createLeftContentPanel();
 
-        // Judul utama
-        JLabel titleLabel = new JLabel("REVENUE");
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 72)); // Ukuran besar
-        titleLabel.setBounds(50, 50, 600, 80); // Posisi disesuaikan
-        titleLabel.setForeground(new Color(10, 30, 70));
-        leftPanel.add(titleLabel);
-
-        // Subtitle
-        JLabel subtitleLabel = new JLabel("Platform Reservasi Venue Terlengkap di Lombok");
-        subtitleLabel.setFont(new Font("SansSerif", Font.PLAIN, 24)); // Ukuran subtitle lebih besar
-        subtitleLabel.setBounds(50, 150, 600, 40); // Posisi subtitle
-        subtitleLabel.setForeground(new Color(50, 50, 50));
-        leftPanel.add(subtitleLabel);
-
-        // Deskripsi Parafrase (diperbaiki posisinya agar tidak tabrakan)
-        JLabel descriptionLabel = new JLabel(
-                "<html><center>Solusi terbaik untuk reservasi venue di Pulau Lombok, dengan sistem yang efisien dan akses informasi yang lengkap, memudahkan proses pemesanan Anda dengan cepat dan mudah.</center></html>");
-        descriptionLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        descriptionLabel.setBounds(50, 200, 500, 100); // Lebar diperbesar dan tinggi disesuaikan
-        descriptionLabel.setForeground(new Color(50, 50, 50));
-        leftPanel.add(descriptionLabel);
-
-        JButton startButton = new JButton("Get Started");
-        startButton.setBounds(50, 320, 200, 50); // Tombol lebih besar
-        startButton.setBackground(new Color(10, 30, 70)); // Ubah ke biru tua
-        startButton.setForeground(Color.WHITE);
-        startButton.setFont(new Font("SansSerif", Font.BOLD, 18));
-        leftPanel.add(startButton);
-
-        // Panel Kanan (Gambar)
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(null);
-        rightPanel.setBackground(Color.WHITE);
-
-        // Mengatur ukuran gambar
-        ImageIcon originalImage = new ImageIcon("aset/astroAwal.png");
-        Image scaledImage = originalImage.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH); // Gambar
-                                                                                                      // diperbesar
-        ImageIcon resizedImage = new ImageIcon(scaledImage);
-
-        JLabel astroLabel = new JLabel(resizedImage, JLabel.CENTER);
-        astroLabel.setBounds(200, 150, 400, 400); // Gambar digeser lebih ke kanan
-        rightPanel.add(astroLabel);
+        // Right Panel (Image)
+        JPanel rightPanel = createRightContentPanel();
 
         contentPanel.add(leftPanel);
         contentPanel.add(rightPanel);
 
-        frame.add(headerPanel, BorderLayout.NORTH);
-        frame.add(contentPanel, BorderLayout.CENTER);
+        return contentPanel;
+    }
 
-        // Event Listener untuk Get Started Button
-        getStartedButton.addActionListener(new ActionListener() {
+    // Create Left Content Panel
+    private static JPanel createLeftContentPanel() {
+        JPanel leftPanel = new JPanel(new GridBagLayout());
+        leftPanel.setBackground(Color.WHITE);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 10, 5, 10);
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+
+        // Main Title
+        JLabel titleLabel = new JLabel("REVENUE");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 60));
+        titleLabel.setForeground(new Color(10, 30, 70));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        leftPanel.add(titleLabel, gbc);
+
+        gbc.gridy++;
+        // Subtitle
+        JLabel subtitleLabel = new JLabel(
+                "<html><div style='width:450px;text-align:left;'>Platform Reservasi Venue Terlengkap di Lombok</div></html>");
+        subtitleLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        subtitleLabel.setForeground(new Color(70, 70, 90));
+        leftPanel.add(subtitleLabel, gbc);
+
+        gbc.gridy++;
+        // Description
+        JLabel descriptionLabel = new JLabel(
+                "<html><div style='text-align: left; width: 450px;'>" +
+                        "Solusi terbaik untuk reservasi venue di Pulau Lombok, dengan sistem yang efisien " +
+                        "dan akses informasi yang lengkap, memudahkan proses pemesanan Anda dengan cepat dan mudah." +
+                        "</div></html>");
+        descriptionLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        descriptionLabel.setForeground(new Color(100, 100, 120));
+        descriptionLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        leftPanel.add(descriptionLabel, gbc);
+
+        gbc.gridy++;
+        // Get Started Button
+        JButton startButton = createGetStartedButton();
+        startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.getContentPane().removeAll(); // Bersihkan semua elemen pada frame
+                frame.getContentPane().removeAll();
+                frame.add(createRoleSelectionPanel(createHeaderPanel(), createMainContentPanel()));
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+        leftPanel.add(startButton, gbc);
 
-                // Panel Pilihan Peran
-                JPanel rolePanel = new JPanel();
-                rolePanel.setBackground(Color.WHITE);
-                rolePanel.setLayout(new BorderLayout());
+        return leftPanel;
+    }
 
-                // Panel Kiri untuk Menampilkan Icon Back
-                JPanel backPanel = new JPanel();
-                backPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-                backPanel.setBackground(Color.WHITE);
+    // Create Right Content Panel
+    private static JPanel createRightContentPanel() {
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setBackground(Color.WHITE);
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
 
-                // Tambahkan gambar icon back
-                ImageIcon backIcon = new ImageIcon("aset/back.png");
-                Image backImage = backIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                ImageIcon backResizedIcon = new ImageIcon(backImage);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
 
-                JButton backButton = new JButton(backResizedIcon);
-                backButton.setBorder(BorderFactory.createEmptyBorder());
-                backButton.setBackground(Color.WHITE);
+        ImageIcon originalImage = new ImageIcon("aset/banner.png");
+        Image scaledImage = originalImage.getImage().getScaledInstance(450, 450, Image.SCALE_SMOOTH);
+        ImageIcon resizedImage = new ImageIcon(scaledImage);
 
-                // Listener untuk tombol back
-                backButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // Kembali ke halaman utama (dashboard)
-                        frame.getContentPane().removeAll(); // Hapus semua komponen
-                        frame.add(headerPanel, BorderLayout.NORTH);
-                        frame.add(contentPanel, BorderLayout.CENTER);
-                        frame.revalidate();
-                        frame.repaint(); // Repaint untuk menampilkan kembali halaman dashboard
-                    }
-                });
+        JLabel astroLabel = new JLabel(resizedImage, JLabel.CENTER);
+        rightPanel.add(astroLabel, gbc);
 
-                backPanel.add(backButton);
+        return rightPanel;
+    }
 
-                // Panel Pilihan User dan Provider
-                JPanel optionPanel = new JPanel(new GridLayout(2, 1, 10, 10));
-                optionPanel.setBackground(Color.WHITE);
-                optionPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+    // Modified method to create Role Selection Panel
+    private static JPanel createRoleSelectionPanel(JPanel headerPanel, JPanel previousContentPanel) {
+        JPanel rolePanel = new JPanel(new BorderLayout());
+        rolePanel.setBackground(Color.WHITE);
 
-                // Panel User
-                JPanel userPanel = new JPanel();
-                userPanel.setLayout(new BorderLayout());
-                userPanel.setBackground(Color.WHITE);
-                userPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        JPanel backPanel = createBackPanel(headerPanel, previousContentPanel);
 
-                ImageIcon userIcon = new ImageIcon("aset/hallo_user.2.png");
-                Image userImage = userIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-                ImageIcon userResizedIcon = new ImageIcon(userImage);
+        JPanel optionPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                JLabel userLabel = new JLabel(
-                        "<html><center><b>Revenue</b><br>Hai, User! Kami senang melihat Anda di sini. Silakan login untuk menemukan venue yang sempurna untuk acara Anda.</center></html>",
-                        userResizedIcon, JLabel.CENTER);
-                userLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
-                userLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                // Subtle gradient background
+                GradientPaint gradient = new GradientPaint(
+                        0, 0, new Color(240, 240, 250),
+                        getWidth(), getHeight(), new Color(220, 230, 255));
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
+            }
+        };
+        optionPanel.setLayout(new GridBagLayout());
+        optionPanel.setOpaque(false);
+        optionPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
 
-                JButton userButton = new JButton("I am User");
-                userButton.setBackground(new Color(10, 30, 70));
-                userButton.setForeground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 20, 10, 20);
 
-                userPanel.add(userLabel, BorderLayout.CENTER);
-                userPanel.add(userButton, BorderLayout.SOUTH);
+        JPanel userPanel = createEnhancedRolePanel(
+                "aset/hallo_user.2.png",
+                "Revenue User",
+                "Hai, User! Kami senang melihat Anda di sini. Silakan login untuk menemukan venue yang sempurna untuk acara Anda.",
+                "I am User");
 
-                // Panel Provider
-                JPanel providerPanel = new JPanel();
-                providerPanel.setLayout(new BorderLayout());
-                providerPanel.setBackground(Color.WHITE);
-                providerPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        JPanel providerPanel = createEnhancedRolePanel(
+                "aset/astroAwal.png",
+                "Revenue Provider",
+                "Selamat datang Provider! Kami siap membantu Anda mengelola venue Anda dengan lebih baik.",
+                "I am Provider");
 
-                ImageIcon providerIcon = new ImageIcon("aset/astroAwal.png");
-                Image providerImage = providerIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-                ImageIcon providerResizedIcon = new ImageIcon(providerImage);
+        gbc.gridx = 0;
+        optionPanel.add(userPanel, gbc);
 
-                JLabel providerLabel = new JLabel(
-                        "<html><center><b>Revenue</b><br>Selamat datang Provider! Kami siap membantu Anda mengelola venue Anda dengan lebih baik.</center></html>",
-                        providerResizedIcon, JLabel.CENTER);
-                providerLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
-                providerLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        gbc.gridx = 1;
+        optionPanel.add(providerPanel, gbc);
 
-                JButton providerButton = new JButton("I am Provider");
-                providerButton.setBackground(new Color(10, 30, 70));
-                providerButton.setForeground(Color.WHITE);
+        rolePanel.add(backPanel, BorderLayout.NORTH);
+        rolePanel.add(optionPanel, BorderLayout.CENTER);
 
-                providerPanel.add(providerLabel, BorderLayout.CENTER);
-                providerPanel.add(providerButton, BorderLayout.SOUTH);
+        return rolePanel;
+    }
 
-                optionPanel.add(userPanel);
-                optionPanel.add(providerPanel);
+    // Enhanced Role Panel Creation Method
+    private static JPanel createEnhancedRolePanel(String imagePath, String title, String description,
+            String buttonText) {
+        JPanel rolePanel = new JPanel(new BorderLayout(10, 10));
+        rolePanel.setBackground(Color.WHITE);
+        rolePanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)));
 
-                rolePanel.add(backPanel, BorderLayout.NORTH);
-                rolePanel.add(optionPanel, BorderLayout.CENTER);
+        // Image Panel
+        JPanel imagePanel = new JPanel(new BorderLayout());
+        imagePanel.setOpaque(false);
+        ImageIcon roleIcon = new ImageIcon(imagePath);
+        Image roleImage = roleIcon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+        ImageIcon resizedRoleIcon = new ImageIcon(roleImage);
+        JLabel roleLabel = new JLabel(resizedRoleIcon, JLabel.CENTER);
+        imagePanel.add(roleLabel, BorderLayout.CENTER);
 
-                frame.add(rolePanel);
+        // Text Panel
+        JPanel textPanel = new JPanel(new BorderLayout());
+        textPanel.setOpaque(false);
+
+        // Title
+        JLabel titleLabel = new JLabel(title, JLabel.CENTER);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(10, 30, 70));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        // Description
+        JLabel roleDescription = new JLabel(
+                "<html><div style='text-align: center; width: 300px;'>" + description + "</div></html>",
+                JLabel.CENTER);
+        roleDescription.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        roleDescription.setForeground(new Color(70, 70, 90));
+
+        // Button
+        JButton roleButton = new JButton(buttonText);
+        roleButton.setBackground(new Color(10, 30, 70));
+        roleButton.setForeground(Color.WHITE);
+        roleButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        roleButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        roleButton.setPreferredSize(new Dimension(200, 50));
+        roleButton.setFocusPainted(false);
+
+        // Add shadow effect to button
+        roleButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(10, 30, 70), 1, true),
+                BorderFactory.createEmptyBorder(10, 20, 10, 20)));
+
+        textPanel.add(titleLabel, BorderLayout.NORTH);
+        textPanel.add(roleDescription, BorderLayout.CENTER);
+        textPanel.add(roleButton, BorderLayout.SOUTH);
+
+        rolePanel.add(imagePanel, BorderLayout.NORTH);
+        rolePanel.add(textPanel, BorderLayout.CENTER);
+
+        // Add hover effect
+        roleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                roleButton.setBackground(new Color(30, 50, 90));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                roleButton.setBackground(new Color(10, 30, 70));
+            }
+        });
+
+        return rolePanel;
+    }
+
+    // Create Back Panel
+    private static JPanel createBackPanel(JPanel headerPanel, JPanel previousContentPanel) {
+        JPanel backPanel = new JPanel(new BorderLayout(10, 10));
+        backPanel.setBackground(Color.WHITE);
+        backPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+        JButton backButton = createBackButton(headerPanel, previousContentPanel);
+
+        JLabel headerLabel = new JLabel("Masuk sebagai", JLabel.CENTER);
+        headerLabel.setFont(new Font("SansSerif", Font.BOLD, 36));
+        headerLabel.setForeground(new Color(10, 30, 70));
+
+        backPanel.add(backButton, BorderLayout.WEST);
+        backPanel.add(headerLabel, BorderLayout.CENTER);
+
+        return backPanel;
+    }
+
+    // Create Back Button
+    private static JButton createBackButton(JPanel headerPanel, JPanel previousContentPanel) {
+        ImageIcon backIcon = new ImageIcon("aset/back.png");
+        Image backImage = backIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon backResizedIcon = new ImageIcon(backImage);
+
+        JButton backButton = new JButton(backResizedIcon);
+        backButton.setBorder(BorderFactory.createEmptyBorder());
+        backButton.setBackground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll();
+                frame.add(headerPanel, BorderLayout.NORTH);
+                frame.add(previousContentPanel, BorderLayout.CENTER);
                 frame.revalidate();
                 frame.repaint();
             }
         });
 
-        frame.setVisible(true);
+        return backButton;
     }
+
+    // Create Styled Button
+    private static JButton createStyledButton(String text, Color foreground, Color background) {
+        JButton button = new JButton(text);
+        button.setForeground(foreground); // Warna teks default
+        button.setBackground(background); // Warna background default
+        button.setFont(new Font("SansSerif", Font.BOLD, 14));
+        button.setFocusPainted(false); // Hilangkan fokus berbentuk kotak
+        button.setBorder(BorderFactory.createEmptyBorder()); // Hilangkan border default
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // Atur efek hover pada teks
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                button.setForeground(new Color(255, 140, 0)); // Ubah warna teks ke oranye saat hover
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                button.setForeground(foreground); // Kembali ke warna teks asli
+            }
+        });
+
+        return button;
+    }
+
+    // Create Get Started Button
+    private static JButton createGetStartedButton() {
+        JButton button = new JButton("Get Started");
+        Color defaultBackground = new Color(10, 30, 70); // Warna latar default
+        Color hoverBackground = Color.WHITE; // Warna latar saat hover
+        Color defaultForeground = Color.WHITE; // Warna teks default
+        Color hoverForeground = new Color(10, 30, 70); // Warna teks saat hover
+        Color borderColor = new Color(10, 30, 70); // Warna border (sama dengan warna latar default)
+
+        button.setBackground(defaultBackground);
+        button.setForeground(defaultForeground);
+        button.setFont(new Font("SansSerif", Font.BOLD, 14));
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setFocusPainted(false);
+
+        // Set border dengan warna biru tua
+        button.setBorder(BorderFactory.createLineBorder(borderColor, 2));
+
+        // Atur efek hover pada tombol
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                button.setBackground(hoverBackground);
+                button.setForeground(hoverForeground);
+                button.setBorder(BorderFactory.createLineBorder(borderColor, 2)); // Tetap gunakan border biru tua
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                button.setBackground(defaultBackground);
+                button.setForeground(defaultForeground);
+                button.setBorder(BorderFactory.createLineBorder(borderColor, 2)); // Kembalikan ke border aslinya
+            }
+        });
+
+        return button;
+    }
+
 }
